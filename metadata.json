@@ -1,6 +1,55 @@
 {
   "name": "JengaPrompts Pro",
-  "description": "A professional toolkit to build, test, and optimize prompts for any AI model (Text, Image, Video, Audio, Code).",
-  "requestFramePermissions": [],
-  "prompt": ""
+  "version": "1.0.0",
+  "description": "A comprehensive toolkit for building, testing, and optimizing prompts across multiple AI model types including text generation, image synthesis, video creation, audio processing, and code generation.",
+  "features": [
+    "Multi-model prompt testing",
+    "A/B testing framework",
+    "Performance analytics",
+    "Template library",
+    "Collaboration tools"
+  ],
+  "supportedAITypes": [
+    {
+      "type": "text",
+      "models": ["GPT", "Claude", "Gemini", "LLaMA"],
+      "capabilities": ["generation", "completion", "conversation"]
+    },
+    {
+      "type": "image",
+      "models": ["DALL-E", "Midjourney", "Stable Diffusion"],
+      "capabilities": ["generation", "editing", "style_transfer"]
+    },
+    {
+      "type": "video",
+      "models": ["Runway", "Pika", "Gen-2"],
+      "capabilities": ["generation", "editing", "animation"]
+    },
+    {
+      "type": "audio",
+      "models": ["ElevenLabs", "MusicLM", "Whisper"],
+      "capabilities": ["speech_synthesis", "music_generation", "transcription"]
+    },
+    {
+      "type": "code",
+      "models": ["GitHub Copilot", "CodeT5", "Codex"],
+      "capabilities": ["completion", "debugging", "explanation"]
+    }
+  ],
+  "config": {
+    "requestFramePermissions": [],
+    "defaultSettings": {
+      "maxPromptLength": 4000,
+      "testIterations": 5,
+      "enableAnalytics": true,
+      "autoSave": true
+    }
+  },
+  "currentSession": {
+    "prompt": "",
+    "modelType": "text",
+    "targetModel": "",
+    "testResults": [],
+    "optimizationSuggestions": []
+  }
 }

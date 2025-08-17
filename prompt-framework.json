@@ -1,102 +1,225 @@
 {
   "frameworkName": "JengaPrompts Pro - Master Prompt Generation Framework",
-  "version": "1.1",
-  "description": "A multi-step process to systematically engineer a user's core idea into a high-quality, modality-specific 'master prompt' for a generative AI.",
+  "version": "2.0",
+  "description": "A comprehensive multi-step process to systematically engineer user ideas into high-quality, modality-specific master prompts for generative AI with advanced optimization and validation.",
+  
+  "framework_principles": {
+    "clarity": "Eliminate ambiguity through structured templates",
+    "specificity": "Use domain-specific methodologies for each modality",
+    "consistency": "Maintain uniform quality across all prompt types",
+    "adaptability": "Support multiple AI models and use cases",
+    "validation": "Include quality checks and optimization suggestions"
+  },
+
+  "supported_models": {
+    "text": ["gemini-2.5-flash", "gpt-4", "claude-3.5-sonnet", "llama-3"],
+    "image": ["dall-e-3", "midjourney", "stable-diffusion", "firefly"],
+    "video": ["runway-gen3", "pika-1.5", "stable-video", "gen-2"],
+    "audio": ["elevenlabs", "musiclm", "audiocraft", "bark"],
+    "code": ["github-copilot", "codewhisperer", "codex", "starcoder"]
+  },
+
   "steps": [
     {
       "step": 1,
-      "name": "Persona Assignment",
-      "description": "The initial instruction that sets the context for the AI model, assigning it an expert role. This is the foundation of the system prompt.",
-      "template": "You are a world-class prompt engineer, a specialist in crafting detailed, effective prompts for AI models. Your task is to take a user's basic idea and transform it into a 'master prompt' optimized for a specific modality."
+      "name": "Context Initialization",
+      "description": "Enhanced persona assignment with domain expertise and quality validation capabilities.",
+      "template": "You are a world-class prompt engineer with deep expertise in {{modality}} generation. Your specializations include:\n- Advanced prompt optimization techniques\n- Domain-specific best practices for {{modality}} AI models\n- Quality validation and improvement strategies\n- Cross-platform compatibility considerations\n\nYour mission: Transform the user's core idea into an optimized master prompt that maximizes AI model performance and output quality.",
+      "validation_criteria": [
+        "Expertise establishment",
+        "Clear role definition", 
+        "Quality focus emphasis"
+      ]
     },
     {
       "step": 2,
-      "name": "Modality-Specific Task Definition",
-      "description": "Provides a detailed, mode-specific instruction set. The system dynamically selects one of these blocks based on user choice and injects the selected parameters.",
+      "name": "Advanced Modality Processing",
+      "description": "Enhanced modality-specific processing with validation, optimization hints, and quality metrics.",
       "modalities": {
         "Image": {
-          "goal": "You are an expert art director and image prompt engineer. Your task is to transform a user's core idea into a structured JSON object. You must follow the VICES method as your guide. **Your Final Task:** Based on the user's core idea, you will generate a JSON object that fills out the VICES REPLICATION TEMPLATE. The values for each key should be detailed, descriptive strings that an AI image generator could understand. Do not add any keys not present in the template. Your output MUST be ONLY the raw JSON object. Do not include markdown `json` tags or any other explanatory text.\n\n**REPLICATION TEMPLATE:**\n```json\n{\n  \"visual_hierarchy\": {\n    \"primary_focus\": {},\n    \"secondary_elements\": {},\n    \"attention_flow\": {}\n  },\n  \"intent_context\": {\n    \"purpose\": {},\n    \"audience\": {},\n    \"cultural_factors\": {}\n  },\n  \"composition_specs\": {\n    \"layout\": {},\n    \"color_system\": {},\n    \"technical_requirements\": {}\n  },\n  \"emotional_aesthetic\": {\n    \"mood_direction\": {},\n    \"style_framework\": {},\n    \"brand_alignment\": {}\n  },\n  \"production_bridge\": {\n    \"content_needs\": {},\n    \"logistics\": {},\n    \"post_production\": {}\n  }\n}\n```",
-          "directives_template": {
-            "Style": "{{imageStyle}}",
-            "Tone & Mood": "{{contentTone}}",
-            "Lighting": "{{lighting}}",
-            "Framing": "{{framing}}",
-            "Camera Angle": "{{cameraAngle}}",
-            "Quality": "{{resolution}}",
-            "Aspect Ratio": "{{aspectRatio}}",
-            "Additional Details": "\"{{additionalDetails}}\""
+          "methodology": "Enhanced VICES Framework",
+          "goal": "Transform user ideas into comprehensive visual generation instructions using the enhanced VICES methodology with quality validation.",
+          "template": "**ENHANCED VICES FRAMEWORK APPLICATION:**\n\nAnalyze the user's idea through these enhanced dimensions:\n\n**V - Visual Hierarchy & Composition**\n- Primary focal elements and their relative importance\n- Secondary supporting elements and their relationships\n- Attention flow and visual weight distribution\n- Rule of thirds, golden ratio, or other compositional techniques\n\n**I - Intent & Context Mapping**\n- Core purpose and intended message\n- Target audience demographics and preferences\n- Cultural, temporal, and contextual factors\n- Brand or style consistency requirements\n\n**C - Creative & Technical Specifications**\n- Detailed layout and framing specifications\n- Advanced color theory application (harmony, contrast, psychology)\n- Technical requirements (resolution, format, constraints)\n- Rendering style and quality parameters\n\n**E - Emotional & Aesthetic Direction**\n- Precise mood and emotional impact goals\n- Style framework and artistic influences\n- Brand personality alignment\n- Sensory and psychological responses\n\n**S - Strategic Production Bridge**\n- Content creation workflow optimization\n- Resource and logistics considerations\n- Post-processing and refinement strategies\n- Multi-variant and A/B testing preparation",
+          "output_schema": {
+            "visual_hierarchy": {
+              "primary_focus": "string - Main subject with detailed description",
+              "secondary_elements": "string - Supporting visual elements",
+              "attention_flow": "string - How the eye should move through the image",
+              "composition_technique": "string - Specific compositional rules applied"
+            },
+            "intent_context": {
+              "purpose": "string - Clear objective of the image",
+              "audience": "string - Target demographic profile",
+              "cultural_factors": "string - Cultural considerations and sensitivities",
+              "use_case": "string - Specific application or platform"
+            },
+            "creative_specs": {
+              "layout": "string - Detailed spatial arrangement",
+              "color_system": "string - Color palette with psychological rationale",
+              "technical_requirements": "string - Resolution, format, quality specs",
+              "style_direction": "string - Artistic style and influences"
+            },
+            "emotional_aesthetic": {
+              "mood_direction": "string - Emotional impact and atmosphere",
+              "style_framework": "string - Artistic approach and techniques",
+              "brand_alignment": "string - Brand personality reflection",
+              "sensory_impact": "string - Expected viewer response"
+            },
+            "production_optimization": {
+              "generation_hints": "string - AI model optimization tips",
+              "quality_checks": "string - Validation criteria",
+              "iteration_strategy": "string - Refinement approach",
+              "variant_suggestions": "string - Alternative approaches"
+            }
           },
-          "key_requirements": [],
-          "output_format_instruction": "A raw JSON object."
+          "quality_metrics": [
+            "Visual clarity and focus",
+            "Compositional strength", 
+            "Emotional resonance",
+            "Technical specification completeness",
+            "Brand/purpose alignment"
+          ]
         },
         "Video": {
-          "goal": "You are an expert video producer and prompt engineer. Your task is to transform a user's core idea into a structured JSON object. You must follow the PAVCI method as your guide. **Your Final Task:** Based on the user's core idea, you will generate a JSON object that fills out the PAVCI REPLICATION TEMPLATE. The values for each key should be detailed, descriptive strings that would guide a video production. Do not add any keys not present in the template. Your output MUST be ONLY the raw JSON object. Do not include markdown `json` tags or any other explanatory text.\n\n**REPLICATION TEMPLATE:**\n```json\n{\n  \"project_foundation\": {\n    \"identity\": {},\n    \"vision\": {},\n    \"constraints\": {}\n  },\n  \"audience_objectives\": {\n    \"primary_audience\": {},\n    \"stakeholders\": {},\n    \"success_metrics\": {}\n  },\n  \"visual_system\": {\n    \"identity\": {},\n    \"production_design\": {},\n    \"technical_specs\": {}\n  },\n  \"content_structure\": {\n    \"narrative\": {},\n    \"timing\": {},\n    \"elements\": {}\n  },\n  \"implementation_bridge\": {\n    \"pre_production\": {},\n    \"production\": {},\n    \"post_production\": {}\n  }\n}\n```",
-          "directives_template": {
-            "Content Tone": "{{contentTone}}",
-            "Point of View": "{{pov}}",
-            "Quality": "{{resolution}}"
-          },
-          "key_requirements": [],
-          "output_format_instruction": "A raw JSON object."
+          "methodology": "Enhanced PAVCI Framework",
+          "goal": "Create comprehensive video production blueprints using advanced PAVCI methodology with timeline and quality optimization.",
+          "template": "**ENHANCED PAVCI FRAMEWORK APPLICATION:**\n\n**P - Project Foundation & Vision**\n- Core identity and unique value proposition\n- Creative vision and artistic direction\n- Technical and resource constraints\n- Success criteria and KPIs\n\n**A - Audience & Stakeholder Alignment**\n- Primary audience segmentation and personas\n- Secondary stakeholder considerations\n- Platform-specific requirements and best practices\n- Engagement and conversion objectives\n\n**V - Visual System & Production Design**\n- Comprehensive visual identity and style guide\n- Production design elements and requirements\n- Technical specifications and quality standards\n- Equipment and software recommendations\n\n**C - Content Structure & Narrative**\n- Detailed narrative arc and story structure\n- Precise timing and pacing specifications\n- Key visual and audio elements integration\n- Interactive or dynamic content considerations\n\n**I - Implementation & Production Pipeline**\n- Pre-production planning and preparation\n- Production workflow and team coordination\n- Post-production pipeline and quality control\n- Distribution and optimization strategies",
+          "output_schema": {
+            "project_foundation": {
+              "identity": "string - Core concept and unique elements",
+              "vision": "string - Creative direction and artistic goals", 
+              "constraints": "string - Technical, budget, and time limitations",
+              "success_metrics": "string - Measurable success criteria"
+            },
+            "audience_alignment": {
+              "primary_audience": "string - Target demographic and psychographics",
+              "stakeholders": "string - Secondary audiences and decision makers",
+              "platform_optimization": "string - Platform-specific considerations",
+              "engagement_goals": "string - Desired audience actions and responses"
+            },
+            "visual_production": {
+              "style_guide": "string - Visual identity and consistency rules",
+              "production_design": "string - Sets, props, wardrobe, graphics",
+              "technical_specs": "string - Camera, lighting, audio requirements",
+              "quality_standards": "string - Resolution, format, delivery specs"
+            },
+            "content_narrative": {
+              "story_structure": "string - Narrative arc and key moments",
+              "timing_breakdown": "string - Scene-by-scene timing",
+              "element_integration": "string - Visual, audio, text coordination",
+              "dynamic_elements": "string - Interactive or changing components"
+            },
+            "production_pipeline": {
+              "pre_production": "string - Planning, scripting, storyboarding",
+              "production_workflow": "string - Filming/creation process",
+              "post_production": "string - Editing, effects, quality control",
+              "optimization_strategy": "string - Platform delivery and performance"
+            }
+          }
         },
         "Text": {
-          "goal": "Refine the user's prompt to be more specific, structured, and effective for an LLM. The final output should be approximately {{wordCount}} words.",
-          "directives_template": {
-            "Tone": "{{contentTone}}",
-            "Desired Output Format": "{{outputFormat}}"
+          "methodology": "Advanced Linguistic Optimization",
+          "goal": "Engineer precise, contextually rich text prompts with advanced linguistic techniques and quality validation.",
+          "enhanced_directives": {
+            "context_engineering": "Establish comprehensive situational context",
+            "persona_specification": "Define precise AI personality and expertise",
+            "output_structuring": "Create clear format and quality expectations",
+            "example_integration": "Provide relevant examples and counterexamples",
+            "boundary_setting": "Establish clear limitations and quality thresholds",
+            "iteration_guidance": "Include refinement and improvement instructions"
           },
-          "key_requirements": [
-            "Enhance the original prompt by adding context, specifying a persona for the AI, providing examples (if applicable), and setting clear boundaries to prevent vague responses."
-          ],
-          "output_format_instruction": "The complete, enhanced text prompt, ready to be used."
+          "template": "**ADVANCED TEXT PROMPT ENGINEERING:**\n\n1. **Context Establishment**: Provide rich situational background\n2. **Persona Assignment**: Define AI role with specific expertise\n3. **Task Specification**: Clear, actionable objectives with success criteria\n4. **Format Guidelines**: Detailed structure and presentation requirements\n5. **Quality Standards**: Specific metrics and validation criteria\n6. **Example Integration**: Relevant demonstrations of desired output\n7. **Constraint Definition**: Clear boundaries and limitations\n8. **Refinement Instructions**: Iteration and improvement guidance"
         },
         "Audio": {
-          "goal": "Create a rich, descriptive prompt for generating audio (music, speech, or sound effects). The description should be approximately {{wordCount}} words.",
-          "directives_template": {
-            "Audio Type": "{{audioType}}",
-            "Vibe / Mood": "{{audioVibe}}",
-            "Tone": "{{contentTone}}"
-          },
-          "key_requirements": [
-            "If music, describe genre, tempo, instrumentation, and vocals.",
-            "If speech, describe the speaker's voice, emotion, and pacing.",
-            "If SFX, describe the sound's characteristics and environment."
-          ],
-          "output_format_instruction": "A descriptive paragraph tailored for an audio generation model."
+          "methodology": "Comprehensive Audio Design Framework",
+          "goal": "Create detailed audio generation specifications with technical precision and creative direction.",
+          "enhanced_categories": {
+            "music": "Genre, tempo, instrumentation, arrangement, vocal characteristics, production style",
+            "speech": "Voice characteristics, emotional tone, pacing, accent, environmental context",
+            "soundscape": "Environmental audio, layered textures, spatial positioning, dynamic range",
+            "sfx": "Sound characteristics, environmental context, timing, intensity, frequency response"
+          }
         },
         "Code": {
-          "goal": "Convert a natural language request into a precise and clear instruction for a code generation model.",
-          "directives_template": {
-            "Programming Language": "{{codeLanguage}}",
-            "Task": "{{codeTask}}"
-          },
-          "key_requirements": [
-            "Be unambiguous.",
-            "Specify function names, parameters, expected return values, and logic.",
-            "If debugging, provide the broken code and describe the error.",
-            "If refactoring, state the goals (e.g., improve performance, readability)."
-          ],
-          "output_format_instruction": "A well-commented, clear, and actionable prompt for a code generation AI."
+          "methodology": "Structured Code Generation Protocol",
+          "goal": "Generate precise, unambiguous instructions for code generation with quality and maintainability focus.",
+          "enhanced_directives": {
+            "specification_clarity": "Exact functional requirements and constraints",
+            "architecture_guidance": "Structure, patterns, and best practices",
+            "quality_standards": "Performance, security, maintainability criteria",
+            "documentation_requirements": "Comments, documentation, and explanation needs",
+            "testing_considerations": "Validation, edge cases, and error handling",
+            "integration_context": "Dependencies, environment, and deployment factors"
+          }
         }
       }
     },
     {
       "step": 3,
-      "name": "User Input Injection",
-      "description": "The final part of the prompt, which frames the user's core idea and explicitly asks the AI to begin its task.",
-      "template": "Here is my core idea. Please generate the master prompt based on the instructions you have been given.\n\n**Core Idea:** \"{{userPrompt}}\""
+      "name": "Enhanced User Integration",
+      "description": "Advanced user input processing with context analysis and optimization suggestions.",
+      "template": "**CORE IDEA ANALYSIS & OPTIMIZATION**\n\nOriginal concept: \"{{userPrompt}}\"\n\n**Analysis Instructions:**\n1. Identify the core creative intent and objectives\n2. Detect any ambiguities or missing critical information  \n3. Suggest enhancements for optimal AI model performance\n4. Apply modality-specific best practices and optimizations\n5. Generate the master prompt with quality validation checkpoints\n\n**Quality Validation Criteria:**\n- Clarity and specificity of instructions\n- Completeness of technical requirements\n- Alignment with user intent and goals\n- Optimization for target AI model capabilities\n- Scalability and iteration potential\n\nProceed with master prompt generation following the enhanced {{modality}} methodology."
     },
     {
       "step": 4,
-      "name": "Final Assembly and API Call",
-      "description": "The system combines the results of the previous steps into a structured request for the Gemini API.",
+      "name": "Optimized Assembly & Delivery",
+      "description": "Advanced payload construction with model-specific optimizations and quality metrics.",
       "payload_structure": {
-        "model": "gemini-2.5-flash",
-        "contents": "[Result of Step 3]",
+        "model": "{{selectedModel}}",
+        "contents": "[Enhanced User Integration Result]",
         "config": {
-          "systemInstruction": "[Result of Step 1 + Result of Step 2]"
+          "systemInstruction": "[Context Initialization + Modality Processing]",
+          "generationConfig": {
+            "temperature": "{{optimizedTemperature}}",
+            "topK": "{{optimizedTopK}}",
+            "topP": "{{optimizedTopP}}",
+            "maxOutputTokens": "{{calculatedMaxTokens}}"
+          },
+          "safetySettings": "{{modalitySpecificSafety}}"
+        },
+        "metadata": {
+          "framework_version": "2.0",
+          "modality": "{{selectedModality}}",
+          "optimization_level": "{{qualityTier}}",
+          "validation_score": "{{qualityScore}}"
         }
+      },
+      "quality_assurance": {
+        "pre_generation_checks": [
+          "Instruction clarity validation",
+          "Technical requirement completeness",
+          "Model compatibility verification"
+        ],
+        "post_generation_analysis": [
+          "Output quality assessment",
+          "User intent alignment check", 
+          "Optimization opportunity identification"
+        ]
       }
     }
-  ]
+  ],
+
+  "advanced_features": {
+    "multi_model_support": "Automatic optimization for different AI model capabilities",
+    "quality_scoring": "Automated prompt quality assessment and improvement suggestions",
+    "version_control": "Prompt iteration tracking and comparison tools",
+    "batch_processing": "Multiple prompt generation and optimization workflows",
+    "analytics_integration": "Performance tracking and success metrics",
+    "collaborative_tools": "Team-based prompt development and review processes"
+  },
+
+  "optimization_presets": {
+    "creative_maximum": {
+      "temperature": 0.9,
+      "focus": "Maximum creative exploration and novelty"
+    },
+    "balanced_quality": {
+      "temperature": 0.7,
+      "focus": "Optimal balance of creativity and consistency"
+    },
+    "precision_focused": {
+      "temperature": 0.3,
+      "focus": "Maximum accuracy and specification adherence"
+    }
+  }
 }

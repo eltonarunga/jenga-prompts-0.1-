@@ -1,46 +1,127 @@
 {
-  "text-to-video": {
-    "sora": {
-      "name": "Sora",
-      "max_duration": 120
+  "ai_models": {
+    "text_to_video": {
+      "models": {
+        "sora": {
+          "name": "Sora",
+          "provider": "OpenAI",
+          "max_duration": 120,
+          "resolution": "1080p",
+          "pricing_tier": "premium",
+          "availability": "limited_access",
+          "strengths": ["long_duration", "high_quality", "complex_scenes"]
+        },
+        "veo_3": {
+          "name": "Veo 3",
+          "provider": "Google",
+          "max_duration": 8,
+          "resolution": "1080p",
+          "pricing_tier": "standard",
+          "availability": "public_beta",
+          "strengths": ["fast_generation", "good_motion"]
+        },
+        "pika": {
+          "name": "Pika",
+          "provider": "Pika Labs",
+          "max_duration": 10,
+          "resolution": "720p",
+          "pricing_tier": "affordable",
+          "availability": "public",
+          "strengths": ["user_friendly", "creative_effects"]
+        },
+        "runway_gen3": {
+          "name": "Runway Gen-3",
+          "provider": "Runway",
+          "max_duration": 16,
+          "resolution": "1080p",
+          "pricing_tier": "standard",
+          "availability": "public",
+          "strengths": ["professional_tools", "good_consistency"]
+        },
+        "kling": {
+          "name": "Kling",
+          "provider": "Kuaishou",
+          "max_duration": 120,
+          "resolution": "1080p",
+          "pricing_tier": "competitive",
+          "availability": "public",
+          "strengths": ["long_duration", "cost_effective"]
+        }
+      },
+      "common_features": {
+        "input_types": ["text_prompt", "image_reference"],
+        "output_formats": ["mp4", "mov"],
+        "typical_generation_time": "2-10 minutes"
+      }
     },
-    "veo_3": {
-      "name": "Veo 3",
-      "max_duration": 8
+    "text_to_image": {
+      "models": {
+        "dalle_3": {
+          "name": "DALL-E 3",
+          "provider": "OpenAI",
+          "aspect_ratios": [
+            { "ratio": "1:1", "resolution": "1024x1024", "label": "Square" },
+            { "ratio": "16:9", "resolution": "1792x1024", "label": "Landscape" },
+            { "ratio": "9:16", "resolution": "1024x1792", "label": "Portrait" },
+            { "ratio": "4:3", "resolution": "1408x1024", "label": "Standard" },
+            { "ratio": "3:2", "resolution": "1536x1024", "label": "Photo" }
+          ],
+          "pricing_tier": "premium",
+          "strengths": ["prompt_adherence", "safety_features", "text_rendering"]
+        },
+        "midjourney_v7": {
+          "name": "Midjourney v7",
+          "provider": "Midjourney",
+          "aspect_ratios": [
+            { "ratio": "1:1", "resolution": "1024x1024", "label": "Square" },
+            { "ratio": "2:3", "resolution": "896x1344", "label": "Portrait" },
+            { "ratio": "3:2", "resolution": "1344x896", "label": "Landscape" }
+          ],
+          "pricing_tier": "premium",
+          "strengths": ["artistic_quality", "style_consistency", "community"]
+        },
+        "sd_xl_turbo": {
+          "name": "SDXL Turbo",
+          "provider": "Stability AI",
+          "aspect_ratios": [
+            { "ratio": "any", "resolution": "custom", "label": "Flexible" }
+          ],
+          "pricing_tier": "affordable",
+          "strengths": ["speed", "customization", "open_source"]
+        },
+        "ideogram_1": {
+          "name": "Ideogram 1.0",
+          "provider": "Ideogram",
+          "aspect_ratios": [
+            { "ratio": "1:1", "resolution": "1024x1024", "label": "Square" },
+            { "ratio": "16:9", "resolution": "1792x1024", "label": "Landscape" },
+            { "ratio": "10:16", "resolution": "832x1344", "label": "Mobile" }
+          ],
+          "pricing_tier": "standard",
+          "strengths": ["text_in_images", "logo_design", "typography"]
+        },
+        "amazon_titan": {
+          "name": "Amazon Titan Image Generator G1",
+          "provider": "Amazon Web Services",
+          "aspect_ratios": [
+            { "ratio": "1:1", "resolution": "1024x1024", "label": "Square" },
+            { "ratio": "16:9", "resolution": "1792x1024", "label": "Landscape" },
+            { "ratio": "9:16", "resolution": "1024x1792", "label": "Portrait" }
+          ],
+          "pricing_tier": "enterprise",
+          "strengths": ["aws_integration", "enterprise_features", "content_moderation"]
+        }
+      },
+      "common_features": {
+        "input_types": ["text_prompt", "style_reference", "negative_prompt"],
+        "output_formats": ["png", "jpg", "webp"],
+        "typical_generation_time": "10-60 seconds"
+      }
     },
-    "pika": {
-      "name": "Pika",
-      "max_duration": 10
-    },
-    "runway_gen3": {
-      "name": "Runway Gen-3",
-      "max_duration": 16
-    },
-    "kling": {
-      "name": "Kling",
-      "max_duration": 120
-    }
-  },
-  "text-to-image": {
-    "dalle_3": {
-      "name": "DALL-E 3",
-      "aspect_ratios": ["1:1", "16:9", "9:16", "4:3", "3:2"]
-    },
-    "midjourney_v7": {
-      "name": "Midjourney v7",
-      "aspect_ratios": ["1:1", "2:3", "3:2"]
-    },
-    "sd_xl_turbo": {
-      "name": "SDXL Turbo",
-      "aspect_ratios": ["any"]
-    },
-    "ideogram_1": {
-      "name": "Ideogram 1.0",
-      "aspect_ratios": ["1:1", "16:9", "10:16"]
-    },
-    "amazon_titan": {
-      "name": "Amazon Titan G1",
-      "aspect_ratios": ["1:1", "16:9", "9:16"]
+    "metadata": {
+      "last_updated": "2024-12",
+      "version": "1.1",
+      "note": "Capabilities and availability subject to change"
     }
   }
 }

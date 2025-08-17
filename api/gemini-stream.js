@@ -2,168 +2,219 @@ import { GoogleGenAI } from "@google/genai";
 import fs from 'fs';
 import path from 'path';
 
-// Vercel API route for streaming Gemini responses
+// Constants
+const CORS_ORIGIN = 'https://jenga-prompts-0-1.vercel.app';
+const CORS_HEADERS = {
+    'Access-Control-Allow-Origin': CORS_ORIGIN,
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+};
+
+const STREAM_HEADERS = {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Transfer-Encoding': 'chunked',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+};
+
+const GEMINI_CONFIG = {
+    model: 'gemini-2.5-flash',
+    temperature: 0.7,
+    topP: 0.95,
+    topK: 40
+};
+
+// Main handler
 export default async function handler(req, res) {
-    // Enable CORS
-    res.setHeader('Access-Control-Allow-Origin', 'https://jenga-prompts-0-1.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    // Set CORS headers
+    Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+        res.setHeader(key, value);
+    });
     
+    // Handle preflight requests
     if (req.method === 'OPTIONS') {
-        res.status(200).end();
-        return;
+        return res.status(200).end();
     }
 
+    // Validate request method
     if (req.method !== 'POST') {
-        res.status(405).json({ error: 'Method not allowed' });
-        return;
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const clientApiKey = req.headers.authorization;
-    if (clientApiKey !== process.env.CLIENT_API_KEY) {
-        res.status(401).json({ error: 'Unauthorized' });
-        return;
+    // Validate authorization
+    if (req.headers.authorization !== process.env.CLIENT_API_KEY) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Validate API key
+    if (!process.env.GEMINI_API_KEY) {
+        return res.status(500).json({ error: 'API key not configured' });
     }
 
     try {
-        console.log('Received request for streaming enhancement.');
         const { userPrompt, mode, options } = req.body;
         
-        if (!userPrompt) {
-            res.status(400).json({ error: 'Missing userPrompt' });
-            return;
+        if (!userPrompt?.trim()) {
+            return res.status(400).json({ error: 'Missing or empty userPrompt' });
         }
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            res.status(500).json({ error: 'API key not configured' });
-            return;
-        }
-
-        // Set headers for streaming
-        res.writeHead(200, {
-            'Content-Type': 'text/plain; charset=utf-8',
-            'Transfer-Encoding': 'chunked',
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive',
-        });
-
-        const ai = new GoogleGenAI({ apiKey });
-
-        // Build system instruction based on mode and options
-        const systemInstruction = buildSystemInstruction(mode, options);
+        console.log(`Processing ${mode} prompt enhancement request`);
         
-        const config = {
-            systemInstruction,
-            temperature: 0.7,
-            topP: 0.95,
-            topK: 40,
-        };
-
-        const response = await ai.models.generateContentStream({
-            model: 'gemini-2.5-flash',
-            contents: userPrompt,
-            config: config
-        });
-
-        // Stream the response
-        for await (const chunk of response.stream) {
-            const text = chunk.text();
-            if (text) {
-                res.write(text);
-            }
-        }
-
-        res.end();
-
+        await streamGeminiResponse(res, userPrompt, mode, options);
+        
     } catch (error) {
-        console.error('Error in streaming enhancement:', error);
-        
-        if (!res.headersSent) {
-            res.status(500).json({ 
-                error: 'Failed to generate content',
-                details: error.message 
-            });
-        } else if (!res.writableEnded) {
-            res.write(`\n\nError: ${error.message}`);
-            res.end();
-        }
+        console.error('Streaming error:', error);
+        handleStreamError(res, error);
     }
 }
 
-function buildSystemInstruction(mode, options) {
-    let instruction = `You are a world-class prompt engineer. Your mission is to expand a user's simple idea into a rich, detailed, and highly effective prompt for a generative AI model. The generated prompt should be a masterpiece of clarity and descriptive power.`;
+// Stream Gemini response
+async function streamGeminiResponse(res, userPrompt, mode, options) {
+    // Set streaming headers
+    res.writeHead(200, STREAM_HEADERS);
     
-    if (options.outputStructure === 'Descriptive Paragraph') {
-       instruction += ` Do not add any conversational text, prefixes, or explanations. Only output the final prompt.`;
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const systemInstruction = buildSystemInstruction(mode, options);
+    
+    const response = await ai.models.generateContentStream({
+        ...GEMINI_CONFIG,
+        contents: userPrompt,
+        config: { systemInstruction, ...GEMINI_CONFIG }
+    });
+
+    // Stream chunks
+    for await (const chunk of response.stream) {
+        const text = chunk.text();
+        if (text) {
+            res.write(text);
+        }
     }
+    
+    res.end();
+}
 
-    let modeInstruction = '';
-    let paramsToIncorporate = '';
+// Handle streaming errors
+function handleStreamError(res, error) {
+    if (!res.headersSent) {
+        res.status(500).json({ 
+            error: 'Failed to generate content',
+            details: error.message 
+        });
+    } else if (!res.writableEnded) {
+        res.write(`\n\nError: ${error.message}`);
+        res.end();
+    }
+}
 
-    const addParam = (label, value) => {
-        if (value) {
-            paramsToIncorporate += `- ${label}: ${value}\n`;
+// Build system instruction based on mode
+function buildSystemInstruction(mode, options = {}) {
+    const baseInstruction = `You are a world-class prompt engineer. Transform the user's simple idea into a rich, detailed, and highly effective prompt for generative AI.`;
+    
+    // Add output format instruction
+    const outputInstruction = options.outputStructure === 'Descriptive Paragraph' 
+        ? ' Output only the final prompt without explanations.' 
+        : '';
+    
+    const modeInstructions = {
+        'Image': () => {
+            const framework = loadFramework('image-prompt-framework.md');
+            const params = buildImageParams(options);
+            return framework || getImageFallback() + params;
+        },
+        'Video': () => {
+            const framework = loadFramework('video-prompt-framework.md');
+            const params = buildVideoParams(options);
+            return framework || getVideoFallback() + params;
+        },
+        'Text': () => {
+            const params = buildTextParams(options);
+            return `Target: Large language model. Create crystal-clear text generation prompts.${params}`;
+        },
+        'Audio': () => {
+            const params = buildAudioParams(options);
+            return `Target: AI audio/music generator. Describe sound in detail - instrumentation, tempo, emotion.${params}`;
+        },
+        'Code': () => {
+            const params = buildCodeParams(options);
+            return `Target: Code generation AI. Create precise, unambiguous technical prompts.${params}`;
         }
     };
+    
+    const modeInstruction = modeInstructions[mode]?.() || 'Generate a high-quality, general-purpose prompt.';
+    
+    return `${baseInstruction}${outputInstruction}\n\n### Task\n${modeInstruction}`;
+}
 
-    switch (mode) {
-        case 'Image':
-            try {
-                const frameworkPath = path.join(process.cwd(), 'src', 'image-prompt-framework.md');
-                modeInstruction = fs.readFileSync(frameworkPath, 'utf-8');
-            } catch (error) {
-                console.error('Error reading image prompt framework:', error);
-                // Fallback to old instruction
-                modeInstruction = `The target model is a state-of-the-art AI image generator. Weave the following parameters into a fluid, descriptive paragraph. Do not just list them. The prompt should paint a vivid picture for the AI.`;
-            }
-            addParam('Style', options.imageStyle);
-            addParam('Mood/Tone', options.contentTone);
-            addParam('Lighting', options.lighting);
-            addParam('Framing', options.framing);
-            addParam('Camera Angle', options.cameraAngle);
-            addParam('Detail Level', options.resolution);
-            addParam('Aspect Ratio', options.aspectRatio);
-            addParam('Additional Specifics', options.additionalDetails);
-            break;
-        case 'Video':
-            try {
-                const frameworkPath = path.join(process.cwd(), 'src', 'video-prompt-framework.md');
-                modeInstruction = fs.readFileSync(frameworkPath, 'utf-8');
-            } catch (error) {
-                console.error('Error reading video prompt framework:', error);
-                // Fallback to old instruction
-                modeInstruction = `The target model is a state-of-the-art AI video generator. Describe a continuous scene, focusing on motion, atmosphere, and visual storytelling.`;
-            }
-            addParam('Tone', options.contentTone);
-            addParam('Point of View', options.pov);
-            addParam('Detail Level', options.resolution);
-            break;
-        case 'Text':
-            modeInstruction = `The target is a large language model. Your goal is to refine the user's request into a crystal-clear and effective prompt for generating text.`;
-            addParam('Tone of Voice', options.contentTone);
-            addParam('Desired Output Format', options.outputFormat);
-            break;
-        case 'Audio':
-            modeInstruction = `The target model is an AI audio/music generator. Describe the sound in detail, including instrumentation, tempo, and emotional feeling.`;
-            addParam('Audio Type', options.audioType);
-            addParam('Vibe/Mood', options.audioVibe);
-            addParam('Overall Tone', options.contentTone);
-            break;
-        case 'Code':
-            modeInstruction = `The target model is a code generation AI. Create a precise and unambiguous prompt to accomplish the user's technical task. The prompt must provide sufficient context for the AI to generate, debug, or explain code correctly.`;
-            addParam('Language', options.codeLanguage);
-            addParam('Task', options.codeTask);
-            break;
-        default:
-            modeInstruction = `Generate a general-purpose, high-quality prompt.`;
-            break;
+// Load framework files with error handling
+function loadFramework(filename) {
+    try {
+        const frameworkPath = path.join(process.cwd(), 'src', filename);
+        return fs.readFileSync(frameworkPath, 'utf-8');
+    } catch (error) {
+        console.warn(`Framework file ${filename} not found, using fallback`);
+        return null;
     }
+}
 
-    instruction += `\n\n### Task\n${modeInstruction}`;
-    if (paramsToIncorporate) {
-        instruction += `\n\n### Parameters to Incorporate\n${paramsToIncorporate}`;
-    }
+// Parameter builders
+function buildImageParams(options) {
+    return buildParamString([
+        ['Style', options.imageStyle],
+        ['Mood/Tone', options.contentTone],
+        ['Lighting', options.lighting],
+        ['Framing', options.framing],
+        ['Camera Angle', options.cameraAngle],
+        ['Detail Level', options.resolution],
+        ['Aspect Ratio', options.aspectRatio],
+        ['Additional Specifics', options.additionalDetails]
+    ]);
+}
 
-    return instruction;
+function buildVideoParams(options) {
+    return buildParamString([
+        ['Tone', options.contentTone],
+        ['Point of View', options.pov],
+        ['Detail Level', options.resolution]
+    ]);
+}
+
+function buildTextParams(options) {
+    return buildParamString([
+        ['Tone of Voice', options.contentTone],
+        ['Output Format', options.outputFormat]
+    ]);
+}
+
+function buildAudioParams(options) {
+    return buildParamString([
+        ['Audio Type', options.audioType],
+        ['Vibe/Mood', options.audioVibe],
+        ['Tone', options.contentTone]
+    ]);
+}
+
+function buildCodeParams(options) {
+    return buildParamString([
+        ['Language', options.codeLanguage],
+        ['Task', options.codeTask]
+    ]);
+}
+
+// Helper to build parameter strings
+function buildParamString(params) {
+    const validParams = params.filter(([_, value]) => value?.trim());
+    
+    if (validParams.length === 0) return '';
+    
+    const paramList = validParams.map(([label, value]) => `- ${label}: ${value}`).join('\n');
+    return `\n\n### Parameters to Incorporate\n${paramList}`;
+}
+
+// Fallback instructions
+function getImageFallback() {
+    return 'Target: AI image generator. Create vivid, descriptive prompts that paint a clear picture.';
+}
+
+function getVideoFallback() {
+    return 'Target: AI video generator. Describe continuous scenes focusing on motion, atmosphere, and visual storytelling.';
 }

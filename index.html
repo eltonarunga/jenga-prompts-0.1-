@@ -2,21 +2,254 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JengaPrompts Pro - Universal Prompt Engineering</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>JengaPrompts Pro - Universal AI Prompt Engineering Toolkit</title>
+    <meta name="title" content="JengaPrompts Pro - Universal AI Prompt Engineering Toolkit" />
+    <meta name="description" content="Professional toolkit to build, test, and optimize prompts for any AI model. Works with GPT-4, Midjourney, Sora, Claude, and more. Text, Image, Video, Audio, and Code generation." />
+    <meta name="keywords" content="AI prompts, prompt engineering, GPT-4, Midjourney, Sora, Claude, AI toolkit, prompt optimization, text generation, image generation, video generation" />
+    <meta name="author" content="JengaPrompts Pro" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jengaprompts.pro/" />
+    <meta property="og:title" content="JengaPrompts Pro - Universal AI Prompt Engineering Toolkit" />
+    <meta property="og:description" content="Professional toolkit to build, test, and optimize prompts for any AI model. Works with GPT-4, Midjourney, Sora, Claude, and more." />
+    <meta property="og:image" content="https://jengaprompts.pro/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="JengaPrompts Pro" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://jengaprompts.pro/" />
+    <meta property="twitter:title" content="JengaPrompts Pro - Universal AI Prompt Engineering Toolkit" />
+    <meta property="twitter:description" content="Professional toolkit to build, test, and optimize prompts for any AI model. Works with GPT-4, Midjourney, Sora, Claude, and more." />
+    <meta property="twitter:image" content="https://jengaprompts.pro/twitter-image.png" />
+    <meta property="twitter:creator" content="@jengaprompts" />
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#8B5CF6" />
+    <meta name="msapplication-TileColor" content="#8B5CF6" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+    
+    <!-- Critical CSS (inline for performance) -->
+    <style>
+      /* Critical above-the-fold styles */
+      body { 
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        margin: 0; 
+        min-height: 100vh; 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        overflow-x: hidden;
+      }
+      
+      .pattern-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
+          radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 2px, transparent 2px);
+        background-size: 50px 50px;
+        z-index: 0;
+        animation: float 20s ease-in-out infinite;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(1deg); }
+      }
+      
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.6s ease forwards;
+      }
+      
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      /* Loading spinner */
+      .loader {
+        display: inline-block;
+        position: relative;
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+      }
+      
+      .loader div {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+        animation: loader 1.2s linear infinite;
+      }
+      
+      .box1 { animation-delay: 0s; }
+      .box2 { animation-delay: -0.4s; }
+      .box3 { animation-delay: -0.8s; }
+      
+      @keyframes loader {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+      }
+      
+      /* Glass morphism effect */
+      .glass {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      }
+      
+      /* Gradient text */
+      .gradient-text {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .title-stroked {
+        color: white;
+        text-shadow: 
+          -2px -2px 0 rgba(0,0,0,0.3),
+          2px -2px 0 rgba(0,0,0,0.3),
+          -2px 2px 0 rgba(0,0,0,0.3),
+          2px 2px 0 rgba(0,0,0,0.3),
+          0 0 10px rgba(255,255,255,0.5);
+      }
+    </style>
+    
+    <!-- Load Tailwind CSS -->
+    <script>
+      // Optimize Tailwind loading with config
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'sans': ['Inter', 'system-ui', 'sans-serif'],
+              'mono': ['Roboto Mono', 'monospace']
+            },
+            colors: {
+              primary: {
+                50: '#f5f3ff',
+                500: '#8b5cf6',
+                600: '#7c3aed',
+                700: '#6d28d9'
+              }
+            }
+          }
+        }
+      }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/src/index.css">
+    
+    <!-- Fonts (with display=swap for performance) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    
+    <!-- External CSS (non-critical, loaded asynchronously) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" /></noscript>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /></noscript>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "JengaPrompts Pro",
+      "description": "Professional toolkit to build, test, and optimize prompts for any AI model",
+      "url": "https://jengaprompts.pro",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "JengaPrompts Pro"
+      },
+      "featureList": [
+        "Text prompt engineering",
+        "Image prompt optimization",
+        "Video prompt generation",
+        "Audio prompt crafting",
+        "Code prompt enhancement",
+        "Multi-model compatibility"
+      ]
+    }
+    </script>
+    
+    <!-- Performance monitoring (optional) -->
+    <script>
+      // Core Web Vitals tracking
+      function sendToAnalytics(metric) {
+        // Send to your analytics service
+        console.log('Core Web Vital:', metric);
+      }
+      
+      // Load web-vitals library if available
+      if ('PerformanceObserver' in window) {
+        import('https://unpkg.com/web-vitals@3/dist/web-vitals.js')
+          .then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+            getCLS(sendToAnalytics);
+            getFID(sendToAnalytics);
+            getFCP(sendToAnalytics);
+            getLCP(sendToAnalytics);
+            getTTFB(sendToAnalytics);
+          })
+          .catch(err => console.log('Web Vitals not loaded:', err));
+      }
+    </script>
   </head>
 
   <body class="min-h-screen">
-    <div class="pattern-background"></div>
+    <!-- Loading screen (hidden when JS loads) -->
+    <div id="loading-screen" class="fixed inset-0 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center z-50">
+      <div class="text-center">
+        <div class="loader mb-4">
+          <div class="box1"></div>
+          <div class="box2"></div>
+          <div class="box3"></div>
+        </div>
+        <p class="text-white text-lg">Loading JengaPrompts Pro...</p>
+      </div>
+    </div>
+    
+    <div class="pattern-background" aria-hidden="true"></div>
 
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
       <header class="mb-8 sm:mb-12 text-center fade-in" style="animation-delay: 0.2s;">
@@ -35,47 +268,126 @@
         </p>
       </header>
 
+      <!-- React App Container with fallback -->
       <main id="root" class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 sm:mb-12">
-        <!-- React App will be rendered here -->
+        <!-- Fallback content for when JavaScript is disabled -->
+        <noscript>
+          <div class="col-span-full glass rounded-2xl p-8 text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">JavaScript Required</h2>
+            <p class="text-gray-200 mb-4">
+              JengaPrompts Pro requires JavaScript to function properly. 
+              Please enable JavaScript in your browser settings and refresh the page.
+            </p>
+            <button 
+              onclick="location.reload()" 
+              class="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </noscript>
       </main>
 
+      <!-- Features Section -->
       <section class="glass rounded-2xl p-6 sm:p-8 mb-8 sm:mb-12 fade-in" style="animation-delay: 0.8s;">
         <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center gradient-text">Your Universal Prompt Engineering Suite</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-slate-100 dark:bg-gray-800/50 hover:bg-slate-200 dark:hover:bg-gray-800/70 p-6 rounded-xl transition-all transform hover:-translate-y-1">
+          
+          <article class="bg-slate-100 dark:bg-gray-800/50 hover:bg-slate-200 dark:hover:bg-gray-800/70 p-6 rounded-xl transition-all transform hover:-translate-y-1 hover:shadow-xl">
             <div class="w-12 h-12 bg-purple-500/10 dark:bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
-              <i class="fas fa-cubes text-purple-500 dark:text-purple-400 text-xl"></i>
+              <i class="fas fa-cubes text-purple-500 dark:text-purple-400 text-xl" aria-hidden="true"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-slate-800 dark:text-white">For Any Modality</h3>
-            <p class="text-slate-600 dark:text-gray-400 text-sm">Craft expert prompts for Text, Image, Video, Audio, and Code generation, all in one place.</p>
-          </div>
-          <div class="bg-slate-100 dark:bg-gray-800/50 hover:bg-slate-200 dark:hover:bg-gray-800/70 p-6 rounded-xl transition-all transform hover:-translate-y-1">
+            <p class="text-slate-600 dark:text-gray-400 text-sm">
+              Craft expert prompts for Text, Image, Video, Audio, and Code generation, all in one place.
+            </p>
+          </article>
+          
+          <article class="bg-slate-100 dark:bg-gray-800/50 hover:bg-slate-200 dark:hover:bg-gray-800/70 p-6 rounded-xl transition-all transform hover:-translate-y-1 hover:shadow-xl">
             <div class="w-12 h-12 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-              <i class="fas fa-cogs text-blue-500 dark:text-blue-400 text-xl"></i>
+              <i class="fas fa-cogs text-blue-500 dark:text-blue-400 text-xl" aria-hidden="true"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-slate-800 dark:text-white">Platform-Agnostic</h3>
-            <p class="text-slate-600 dark:text-gray-400 text-sm">Engineer prompts that work across different AI models like GPT-4, Midjourney, Sora, and more.</p>
-          </div>
-          <div class="bg-slate-100 dark:bg-gray-800/50 hover:bg-slate-200 dark:hover:bg-gray-800/70 p-6 rounded-xl transition-all transform hover:-translate-y-1">
+            <p class="text-slate-600 dark:text-gray-400 text-sm">
+              Engineer prompts that work across different AI models like GPT-4, Midjourney, Sora, Claude, and more.
+            </p>
+          </article>
+          
+          <article class="bg-slate-100 dark:bg-gray-800/50 hover:bg-slate-200 dark:hover:bg-gray-800/70 p-6 rounded-xl transition-all transform hover:-translate-y-1 hover:shadow-xl">
             <div class="w-12 h-12 bg-green-500/10 dark:bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-              <i class="fas fa-brain text-green-500 dark:text-green-400 text-xl"></i>
+              <i class="fas fa-brain text-green-500 dark:text-green-400 text-xl" aria-hidden="true"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-slate-800 dark:text-white">Structured Enhancement</h3>
-            <p class="text-slate-600 dark:text-gray-400 text-sm">Our AI adds the keywords, structure, and technical details that get superior results.</p>
-          </div>
+            <p class="text-slate-600 dark:text-gray-400 text-sm">
+              Our AI adds the keywords, structure, and technical details that get superior results.
+            </p>
+          </article>
+          
         </div>
       </section>
 
-      <footer class="text-center text-slate-500 dark:text-gray-500 text-sm fade-in" style="animation-delay: 1s;">
+      <!-- Footer -->
+      <footer class="text-center text-slate-500 dark:text-gray-500 text-sm fade-in" style="animation-delay: 1s;" role="contentinfo">
         <div class="flex justify-center space-x-6 mb-4">
-          <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-all"><i class="fab fa-twitter text-lg"></i></a>
-          <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-all"><i class="fab fa-discord text-lg"></i></a>
-          <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-all"><i class="fab fa-github text-lg"></i></a>
-          <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-all"><i class="fas fa-envelope text-lg"></i></a>
+          <a href="https://twitter.com/jengaprompts" 
+             class="hover:text-slate-900 dark:hover:text-white transition-all" 
+             aria-label="Follow us on Twitter"
+             rel="noopener noreferrer" 
+             target="_blank">
+            <i class="fab fa-twitter text-lg" aria-hidden="true"></i>
+          </a>
+          <a href="https://discord.gg/jengaprompts" 
+             class="hover:text-slate-900 dark:hover:text-white transition-all" 
+             aria-label="Join our Discord community"
+             rel="noopener noreferrer" 
+             target="_blank">
+            <i class="fab fa-discord text-lg" aria-hidden="true"></i>
+          </a>
+          <a href="https://github.com/jengaprompts/pro" 
+             class="hover:text-slate-900 dark:hover:text-white transition-all" 
+             aria-label="View source on GitHub"
+             rel="noopener noreferrer" 
+             target="_blank">
+            <i class="fab fa-github text-lg" aria-hidden="true"></i>
+          </a>
+          <a href="mailto:hello@jengaprompts.pro" 
+             class="hover:text-slate-900 dark:hover:text-white transition-all" 
+             aria-label="Contact us via email">
+            <i class="fas fa-envelope text-lg" aria-hidden="true"></i>
+          </a>
         </div>
-        <p>© 2024 JengaPrompts Pro. All rights reserved.</p>
+        <p>&copy; 2024 JengaPrompts Pro. All rights reserved. 
+           <a href="/privacy" class="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</a> | 
+           <a href="/terms" class="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</a>
+        </p>
       </footer>
     </div>
+
+    <!-- Load main application -->
+    <script type="module">
+      // Hide loading screen when React loads
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => loadingScreen.remove(), 300);
+          }
+        }, 500);
+      });
+    </script>
+    
     <script type="module" src="/src/index.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => console.log('SW registered'))
+            .catch(registrationError => console.log('SW registration failed'));
+        });
+      }
+    </script>
   </body>
 </html>
